@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Phishing Checker</title>
+
+    <!-- FONT -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            font-family: 'Poppins', sans-serif;
+            background: radial-gradient(circle at top, #0f172a, #020617);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 500px;
+            text-align: center;
+            padding: 40px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 30px rgba(0, 200, 255, 0.2);
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #38bdf8;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: none;
+            outline: none;
+            font-size: 14px;
+
+            background: #020617;
+            color: white;
+
+            box-shadow:
+                inset 0 0 10px rgba(0,200,255,0.3),
+                0 0 10px rgba(0,200,255,0.2);
+        }
+
+        input::placeholder {
+            color: #94a3b8;
+        }
+
+        button {
+            margin-top: 15px;
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+
+            background: linear-gradient(90deg, #06b6d4, #3b82f6);
+            color: white;
+            font-weight: 600;
+
+            box-shadow: 0 0 15px rgba(0,200,255,0.5);
+            transition: 0.3s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px rgba(0,200,255,0.8);
+        }
+
+        .result-box {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 15px;
+            background: rgba(0,0,0,0.4);
+            box-shadow: inset 0 0 10px rgba(0,200,255,0.2);
+        }
+
+        .danger {
+            color: #ef4444;
+        }
+
+        .warning {
+            color: #facc15;
+        }
+
+        .safe {
+            color: #22c55e;
+        }
+
+        a {
+            color: #38bdf8;
+            text-decoration: none;
+            word-break: break-all;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .percent {
+            font-size: 22px;
+            margin: 10px 0;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🔍 Phishing Checker</h1>
+
+    <form method="POST">
+        <input name="url" placeholder="Nhập link cần kiểm tra..." required>
+        <button>Kiểm tra</button>
+    </form>
+
+    {% if result %}
+        <div class="result-box">
+
+            <!-- KẾT QUẢ -->
+            <h2 class="
+                {% if 'PHISHING' in result %}danger
+                {% elif 'NGHI' in result %}warning
+                {% else %}safe
+                {% endif %}
+            ">
+                {{ result }}
+            </h2>
+
+            <!-- % -->
+            <div class="percent">
+                Độ nguy hiểm: <b>{{ percent }}%</b>
+            </div>
+
+            <!-- LINK -->
+            {% if is_shortened %}
+                <p><b>Link rút gọn:</b></p>
+                <p>{{ original_url }}</p>
+
+                <p><b>Link thật:</b></p>
+                <a href="{{ final_url }}" target="_blank">{{ final_url }}</a>
+            {% else %}
+                <p><b>Link:</b></p>
+                <a href="{{ final_url }}" target="_blank">{{ final_url }}</a>
+            {% endif %}
+
+        </div>
+    {% endif %}
+
+</div>
+
+</body>
+</html>
